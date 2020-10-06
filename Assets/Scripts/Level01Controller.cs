@@ -7,12 +7,15 @@ using UnityEngine.UI;
 public class Level01Controller : MonoBehaviour
 {
     [SerializeField] Text _currentScoreTextView;
-    [SerializeField] GameObject _panalToView; 
+    [SerializeField] GameObject _panalToView;
+    [SerializeField] GameObject _deathScreen;
 
     int _currentScore;
 
     private void Start()
     {
+        _panalToView.SetActive(false);
+        _deathScreen.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -30,8 +33,8 @@ public class Level01Controller : MonoBehaviour
         //TODO bring up popup menu for navigation
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            //Cursor.lockState = CursorLockMode.None;
+            //Cursor.visible = true;
             //_panalToView.SetActive(true);
             Resume();
         }
@@ -43,6 +46,19 @@ public class Level01Controller : MonoBehaviour
     {
         bool currentIsActive = _panalToView.activeSelf;
         _panalToView.SetActive(!currentIsActive);
+
+        Cursor.visible = !currentIsActive;
+
+        if (!currentIsActive)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Debug.Log("Lock None");
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Debug.Log("Lock Locked");
+        }
     }
 
     public void setCursor()
@@ -64,6 +80,20 @@ public class Level01Controller : MonoBehaviour
 
         //load new level
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void deathMenu()
+    {
+        _deathScreen.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void Restart()
+    {
+        int activeSceneIndex =
+                SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(activeSceneIndex);
     }
 
     public void IncreaseScore(int scoreIncrease)

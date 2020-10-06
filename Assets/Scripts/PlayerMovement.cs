@@ -13,6 +13,9 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
+    public ParticleSystem gunParticle;
+    public AudioSource gunSound;
+
 
     Vector3 velocity;
     bool isGrounded;
@@ -34,6 +37,16 @@ public class PlayerMovement : MonoBehaviour
 
         controller.Move(move * speed * Time.deltaTime);
 
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            speed *= 2;
+        }
+
+        if(Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            speed /= 2;
+        }
+
         if(Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -42,5 +55,18 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Shoot();
+        }
+    }
+
+    public void Shoot()
+    {
+        //play particle effect
+        gunParticle.Play();
+        //play sound
+        gunSound.Play();
     }
 }
