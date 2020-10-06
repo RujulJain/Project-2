@@ -14,8 +14,6 @@ public class Level01Controller : MonoBehaviour
 
     private void Start()
     {
-        _panalToView.SetActive(false);
-        _deathScreen.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
